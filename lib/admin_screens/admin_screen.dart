@@ -1,3 +1,4 @@
+import 'package:event_generator/widgets/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:event_generator/admin_screens/add_post.dart';
@@ -20,7 +21,10 @@ class _AdminScreenState extends State<AdminScreen> {
   final TextEditingController _preTestQuestion = TextEditingController();
   final TextEditingController _postTestQuestion = TextEditingController();
   final _formPre = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _formPost = GlobalKey<FormState>();
+  final TextEditingController _dateText = TextEditingController();
+  String cureentDate = '';
 
   @override
   void initState() {
@@ -33,43 +37,62 @@ class _AdminScreenState extends State<AdminScreen> {
     return Scaffold(
       appBar: UtilsWidgets.buildAppBar("Admin Panel"),
       drawer: BuildDrawer.buildAdminDrawer(context),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+      body: Form(
+        key: _formKey,
         child: Center(
           child: Column(
             children: [
               const SizedBox(
                 height: 20,
               ),
+              UtilsWidgets.buildDatePicker(
+                'Choose Webinar Date',
+                'Choose Webinar Date',
+                _dateText,
+                (val) {
+                  setState(() {
+                    cureentDate = Utils.getCureentDate(DateTime.parse(val));
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               UtilsWidgets.buildRoundBtn('Set PreTest', () {
-                UtilsWidgets.addField(context, () {
-                  if (_formPre.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddPreTest(
-                                  no: int.parse(_preTestQuestion.text),
-                                )));
-                  }
-                }, 'Add Number of Question', _formPre, _preTestQuestion,
-                    isRequired: false);
-                _preTestQuestion.clear();
+                if (_formKey.currentState!.validate()) {
+                  UtilsWidgets.addField(context, () {
+                    if (_formPre.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPreTest(
+                                    no: int.parse(_preTestQuestion.text.trim()),
+                                    setDate: cureentDate,
+                                  )));
+                    }
+                  }, 'Add Number of Question', _formPre, _preTestQuestion,
+                      isRequired: false);
+                  _preTestQuestion.clear();
+                }
               }),
               const SizedBox(
                 height: 10,
               ),
               UtilsWidgets.buildRoundBtn('Set PostTest', () {
-                UtilsWidgets.addField(context, () {
-                  if (_formPost.currentState!.validate()) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddPostTest(
-                                  no: int.parse(_postTestQuestion.text),
-                                )));
-                  }
-                }, 'Add Number of Question', _formPost, _postTestQuestion,
-                    isRequired: false);
+                if (_formKey.currentState!.validate()) {
+                  UtilsWidgets.addField(context, () {
+                    if (_formPost.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPostTest(
+                                    no: int.parse(_postTestQuestion.text),
+                                    setDate: cureentDate,
+                                  )));
+                    }
+                  }, 'Add Number of Question', _formPost, _postTestQuestion,
+                      isRequired: false);
+                }
                 _postTestQuestion.clear();
               }),
               const SizedBox(

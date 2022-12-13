@@ -21,16 +21,10 @@ class _UserSessionReportState extends State<UserSessionReport> {
   List<List<dynamic>> reportData = [
     ["Email", "Total Login", "Entries"]
   ];
+  final TextEditingController _dateText = TextEditingController();
 
   List<dynamic> sessionDate = [];
   String cureentDate = '';
-  // = Utils.getCureentDate(DateTime.now());
-
-  @override
-  void initState() {
-    getDate();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +38,15 @@ class _UserSessionReportState extends State<UserSessionReport> {
             const SizedBox(
               height: 20,
             ),
-            UtilsWidgets.dropDownButton(
+            UtilsWidgets.buildDatePicker(
               'Choose Webinar Date',
               'Choose Webinar Date',
-              cureentDate,
-              sessionDate,
+              _dateText,
               (val) {
                 setState(() {
-                  cureentDate = val;
+                  cureentDate = Utils.getCureentDate(DateTime.parse(val));
                 });
                 getReport();
-              },
-              validator: (p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Please Choose Webinar Date';
-                }
               },
             ),
             const SizedBox(
@@ -78,19 +66,6 @@ class _UserSessionReportState extends State<UserSessionReport> {
         ),
       ),
     );
-  }
-
-  Future getDate() async {
-    FirebaseFirestore.instance
-        .collection('webinar')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        setState(() {
-          sessionDate.add(doc.id.toString());
-        });
-      });
-    });
   }
 
   Future uploadCSV() async {

@@ -161,33 +161,6 @@ class UtilsWidgets {
     );
   }
 
-  static Widget buildIconBtn(
-      String? btnsend, Widget icon, Function()? onPressed) {
-    return TextButton.icon(
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.teal,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0))),
-        onPressed: onPressed,
-        icon: icon,
-        label: Text(
-          "$btnsend",
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ));
-  }
-
-  static SingleChildScrollView questionField(
-      int index, List<String> questionList) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Text(
-        (index + 1).toString() + '. ' + questionList[index],
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
   static Widget textFormField(String? labelText, String hintText,
       String? Function(String?)? validator, TextEditingController? controller,
       {bool isReadOnly = false,
@@ -323,12 +296,9 @@ class UtilsWidgets {
         controller: editingController,
         onChanged: onChanged,
         validator: (val) {
-          // if (val!.isEmpty) {
-          //   return "Please choose birth date";
-          // } else if (val.toString().substring(0, 9) ==
-          //     DateTime.now().toString().substring(0, 9)) {
-          //   return "Please choose birth date";
-          // }
+          if (val!.isEmpty) {
+            return "Please Choose Webinar Date";
+          }
         },
       ),
     );

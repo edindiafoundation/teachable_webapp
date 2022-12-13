@@ -22,8 +22,8 @@ class _AddLinkState extends State<AddLink> {
   bool isPicked = false;
   bool _isLoading = true;
   PlatformFile? pickedFile;
-
-  String cureentDate = Utils.getCureentDate(DateTime.now());
+  final TextEditingController _dateText = TextEditingController();
+  String cureentDate = '';
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,19 @@ class _AddLinkState extends State<AddLink> {
               key: _formKey,
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  UtilsWidgets.buildDatePicker(
+                    'Choose Webinar Date',
+                    'Choose Webinar Date',
+                    _dateText,
+                    (val) {
+                      setState(() {
+                        cureentDate = Utils.getCureentDate(DateTime.parse(val));
+                      });
+                    },
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -75,15 +88,14 @@ class _AddLinkState extends State<AddLink> {
                             _webinarTitleText.clear();
                             _webinarIDText.clear();
                             _webinarLinkText.clear();
+                            _dateText.clear();
                           }
                         })
                       : const Center(child: CircularProgressIndicator()),
                   const SizedBox(
                     height: 20,
                   ),
-                  const Divider(
-                    thickness:2
-                  ),
+                  const Divider(thickness: 2),
                   const SizedBox(
                     height: 20,
                   ),

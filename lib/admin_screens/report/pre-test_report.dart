@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_generator/widgets/utility.dart';
 import 'package:event_generator/widgets/widget_utils.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -28,13 +29,7 @@ class _PreTestReportState extends State<PreTestReport> {
   List<String> answer = [];
   List<dynamic> sessionDate = [];
   String cureentDate = '';
-  // String cureentDate = Utils.getCureentDate(DateTime.now());
-
-  @override
-  void initState() {
-    getDate();
-    super.initState();
-  }
+  final TextEditingController _dateText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +40,15 @@ class _PreTestReportState extends State<PreTestReport> {
             const SizedBox(
               height: 20,
             ),
-            UtilsWidgets.dropDownButton(
+            UtilsWidgets.buildDatePicker(
               'Choose Webinar Date',
               'Choose Webinar Date',
-              cureentDate,
-              sessionDate,
+              _dateText,
               (val) {
                 setState(() {
-                  cureentDate = val;
+                  cureentDate = Utils.getCureentDate(DateTime.parse(val));
                 });
-                getField();
                 getResult();
-              },
-              validator: (p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Please Choose Webinar Date';
-                }
               },
             ),
             kIsWeb
@@ -80,19 +68,6 @@ class _PreTestReportState extends State<PreTestReport> {
         ),
       ),
     );
-  }
-
-  Future getDate() async {
-    FirebaseFirestore.instance
-        .collection('webinar')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        setState(() {
-          sessionDate.add(doc.id.toString());
-        });
-      });
-    });
   }
 
   Future uploadCSV() async {
@@ -156,6 +131,7 @@ class _PreTestReportState extends State<PreTestReport> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           if (doc.data().toString().contains('$cureentDate')) {
+            getField();
             List<String> test = [];
             setState(() {
               test.clear();
@@ -164,9 +140,11 @@ class _PreTestReportState extends State<PreTestReport> {
               });
               testData.add(test);
             });
+          } else {
+            testData.add(['No Record Found']);
           }
         });
-        UtilsWidgets.showToastFunc('Downloading The Report');
+        UtilsWidgets.showToastFunc('Now Download The Report');
       });
     } on FirebaseException catch (e) {
       UtilsWidgets.showToastFunc(e.message.toString());

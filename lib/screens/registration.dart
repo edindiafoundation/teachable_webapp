@@ -548,7 +548,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   UtilsWidgets.showAlertDialog(context, () {
                                     Navigator.of(context).pop();
                                   }, 'Something Missing',
-                                      'please'.tr + 'role_tf'.tr,
+                                      'please'.tr + 'role_vtf'.tr,
                                       note: '');
                                 } else if (_formKey.currentState!.validate()) {
                                   UtilsWidgets.bottomDialogs(
@@ -648,7 +648,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future getPVT() async {
     pvtInstitutes.clear();
-    pvtInstitutes.add('Other');
     try {
       FirebaseFirestore.instance
           .collection('pvt')
@@ -661,6 +660,9 @@ class _RegisterPageState extends State<RegisterPage> {
             });
           } else {}
         });
+        setState(() {
+          pvtInstitutes.add('Other');
+        });
       });
     } catch (e) {
       UtilsWidgets.showToastFunc(e.toString());
@@ -669,7 +671,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future getDIET() async {
     diets.clear();
-    diets.add('Other');
     try {
       FirebaseFirestore.instance
           .collection('diet')
@@ -682,6 +683,9 @@ class _RegisterPageState extends State<RegisterPage> {
             });
           } else {}
         });
+        // setState(() {
+        //   diets.add('Other');
+        // });
       });
     } catch (e) {
       UtilsWidgets.showToastFunc(e.toString());

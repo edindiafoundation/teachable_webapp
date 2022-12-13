@@ -20,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int i = 3;
+  User? user;
   bool isSubmit = false;
   bool postislive = false;
   bool webinarislive = false;
@@ -27,18 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
   String webinarTitle = "";
   String username = '';
   String cureentDate = '';
-  final user = FirebaseAuth.instance.currentUser;
   String downloadURL =
       'https://edindia.org/wp-content/uploads/2019/11/EdIndia-Transparent.png';
 
   @override
   void initState() {
+    user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      getDate();
+      getRecentDate();
       isLive();
       onOpen(i);
-      getUser();
       getImage();
+      getUser();
       userSession();
       getVerification();
     }
@@ -121,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 //get list of all webinar date and id
-  Future getDate() async {
+  Future getRecentDate() async {
     List<dynamic> sessionDate = [];
     FirebaseFirestore.instance
         .collection('webinar')
@@ -160,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-//intial dialog
+// //intial dialog
   onOpen(int i) {
     Timer.periodic(Duration(seconds: i), (val) {
       setState(() {
@@ -172,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-//get current user info i.e fname
+// //get current user info i.e fname
   Future getUser() async {
     try {
       FirebaseFirestore.instance
@@ -191,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-//get banner image
+// //get banner image
   Future getImage() async {
     final ref = FirebaseStorage.instance.ref().child('images/webinar.jpeg');
     ref.getDownloadURL().then((value) {
@@ -201,33 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-//check pre-test is given or not
-  Future getVerification() async {
-    try {
-      FirebaseFirestore.instance
-          .collection('preTestResult')
-          .doc(user!.email.toString())
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          if (documentSnapshot.data().toString().contains('$cureentDate')) {
-            Map abc = documentSnapshot['$cureentDate'];
-            setState(() {
-              isSubmit = abc['isSubmit'];
-            });
-          }
-        } else {
-          setState(() {
-            isSubmit = false;
-          });
-        }
-      });
-    } catch (e) {
-      UtilsWidgets.showToastFunc(e.toString());
-    }
-  }
-
-//Monitor user enterance
+// //Monitor user enterance
   Future userSession() async {
     String todayDate = Utils.getCureentDate(DateTime.now());
     Map sessionMap = {};
@@ -267,6 +242,31 @@ class _HomeScreenState extends State<HomeScreen> {
             sessionMap['entries'] = abc;
           });
           ref.set({'$todayDate': sessionMap});
+        }
+      });
+    } catch (e) {
+      UtilsWidgets.showToastFunc(e.toString());
+    }
+  }
+
+  // //check pre-test is given or not
+  Future getVerification() async {
+    try {
+      FirebaseFirestore.instance
+          .collection('preTestResult')
+          .doc(user!.email.toString())
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          if (documentSnapshot.data().toString().contains('$cureentDate')) {
+            setState(() {
+              isSubmit = documentSnapshot['$cureentDate']['isSubmit'];
+            });
+          }
+        } else {
+          setState(() {
+            isSubmit = false;
+          });
         }
       });
     } catch (e) {

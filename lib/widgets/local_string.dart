@@ -46,6 +46,7 @@ class LocalString extends Translations {
           'diet_tf': 'Choose Your DIET/BTI ',
           'college_tf': 'Choose Your College',
           'role_tf': 'You are a ',
+          'role_vtf': 'Choose Your role',
           'course_tf': 'Choose Your Course',
           'coursey_tf': 'Choose Your Course Year',
           'other_tf': 'Other',
@@ -85,8 +86,8 @@ class LocalString extends Translations {
           'cancel': 'रद्द करें',
           'wait': 'प्रतीक्षा करें...',
           'verification':
-              'आपके दर्ज किये गये ईमेल पते\n पर एक वेरीफिकेशन मेल भेजा गया है |',
-          'verify': 'कृपया मेल पर जाकर लिंक\n पर क्लिक करके पुष्टि करें |',
+              'आपके दर्ज किये गये G-mail एड्रेस\nपर एक वेरीफिकेशन मेल भेजा गया है |',
+          'verify': 'कृपया मेल पर जाकर लिंक\nपर क्लिक करके पुष्टि करें |',
           'please': 'कृपया ',
           'note': 'ध्यान दें :',
           'note_msg':
@@ -111,6 +112,7 @@ class LocalString extends Translations {
           'diet_tf': 'अपनी डाइट/बी.टी.आई चुनें ',
           'college_tf': 'आपका कॉलेज चुनें ',
           'role_tf': 'आप हैं',
+          'role_vtf': 'आपना रोल चुनें',
           'course_tf': 'आपका कोर्स चुनें ',
           'coursey_tf': 'आपका कोर्स वर्ष चुनें ',
           'other_tf': 'अन्य',
@@ -122,7 +124,7 @@ class LocalString extends Translations {
           'steps':
               'स्टेप 1 - लाइव वेबिनार से जुड़ने के लिए "वेबिनार पर जायें" बटन पर क्लिक करें\n\nस्टेप 2 - प्री-असेसमेंट भरें\n\nस्टेप 3 -  वेबिनार को पूरा देखने के बाद पोस्ट-असेसमेंट ज़रूर भरें',
           'notess':
-              '\n( नोट: प्री-असेसमेंट पूरा करने बाद वेबिनार का बटन दिया जायेगा | \nबटन पर क्लिक करके वेबिनार से आप जुड़ जायेंगे | )',
+              '\n( नोट: प्री-असेसमेंट पूरा करने के बाद वेबिनार का बटन दिया जायेगा | \nबटन पर क्लिक करके वेबिनार से आप जुड़ जायेंगे | )',
           'ans_tf': 'अपना उत्तर चुनें',
           'final_check': 'कृपया अपने उत्तर जांचें',
           'feed_q1': 'आज का सत्र आपको कैसा लगा?',

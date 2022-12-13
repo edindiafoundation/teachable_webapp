@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:event_generator/widgets/utility.dart';
 import 'package:event_generator/widgets/widget_utils.dart';
 import 'package:flutter/material.dart';
 
 class AddPostTest extends StatefulWidget {
   final int no;
-  const AddPostTest({super.key, required this.no});
+  final String setDate;
+  const AddPostTest({super.key, required this.no, required this.setDate});
 
   @override
   State<AddPostTest> createState() => _AddPostTestState();
@@ -16,13 +16,15 @@ class _AddPostTestState extends State<AddPostTest> {
   bool isAdd = false;
   final _formKey = GlobalKey<FormState>();
   final _formKey2 = GlobalKey<FormState>();
-  String cureentDate = Utils.getCureentDate(DateTime.now());
+  String cureentDate = '';
+  // Utils.getCureentDate(DateTime.now());
   List<TextEditingController> question = [];
   List<TextEditingController> answer = [];
   List<TextEditingController> options = [];
 
   @override
   void initState() {
+    cureentDate = widget.setDate;
     count = widget.no;
     super.initState();
   }

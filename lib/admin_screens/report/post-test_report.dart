@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_generator/widgets/utility.dart';
 import 'package:event_generator/widgets/widget_utils.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -37,13 +38,7 @@ class _PostTestReportState extends State<PostTestReport> {
   List<String> answer = [];
   List<dynamic> sessionDate = [];
   String cureentDate = '';
-  // String cureentDate = Utils.getCureentDate(DateTime.now());
-
-  @override
-  void initState() {
-    getDate();
-    super.initState();
-  }
+  final TextEditingController _dateText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +49,16 @@ class _PostTestReportState extends State<PostTestReport> {
             const SizedBox(
               height: 20,
             ),
-            UtilsWidgets.dropDownButton(
+            UtilsWidgets.buildDatePicker(
               'Choose Webinar Date',
               'Choose Webinar Date',
-              cureentDate,
-              sessionDate,
+              _dateText,
               (val) {
                 setState(() {
-                  cureentDate = val;
+                  cureentDate = Utils.getCureentDate(DateTime.parse(val));
                 });
-                getField();
                 getTestResult();
                 getRatingResult();
-              },
-              validator: (p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Please Choose Webinar Date';
-                }
               },
             ),
             const SizedBox(
@@ -114,19 +102,6 @@ class _PostTestReportState extends State<PostTestReport> {
         ),
       ),
     );
-  }
-
-  Future getDate() async {
-    FirebaseFirestore.instance
-        .collection('webinar')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        setState(() {
-          sessionDate.add(doc.id.toString());
-        });
-      });
-    });
   }
 
   Future uploadReportCSV() async {
@@ -251,6 +226,7 @@ class _PostTestReportState extends State<PostTestReport> {
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs.forEach((doc) {
           if (doc.data().toString().contains('$cureentDate')) {
+            getField();
             List<String> test = [];
             setState(() {
               test.clear();

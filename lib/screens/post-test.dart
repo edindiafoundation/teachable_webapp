@@ -23,7 +23,6 @@ class PostTestState extends State<PostTest> {
   final _formKey = GlobalKey<FormState>();
   String email = '';
   String videoTitle = '';
-
   String cureentDate = '';
   bool isSubmit = false;
   int count = 0;
@@ -57,7 +56,7 @@ class PostTestState extends State<PostTest> {
                     const SizedBox(
                       height: 20,
                     ),
-                    UtilsWidgets.questionField(index, question),
+                    Widgets.questionField(index, question),
                     UtilsWidgets.dropDownButton(
                       'ans_tf'.tr,
                       'ans_tf'.tr,
@@ -83,7 +82,7 @@ class PostTestState extends State<PostTest> {
                     const SizedBox(
                       height: 20,
                     ),
-                    UtilsWidgets.questionField(index, question),
+                    Widgets.questionField(index, question),
                     Widgets.fieldData(useranswer[index].toString(),
                         correctanswer[index].toString(), context,
                         isHighlight: true,
@@ -122,7 +121,7 @@ class PostTestState extends State<PostTest> {
       setState(() {
         val.cancel();
       });
-      UtilsWidgets.showRatingAppDialog(context, videoTitle ,() async {
+      UtilsWidgets.showRatingAppDialog(context, videoTitle, () async {
         rate = {
           'email': email,
           'comment': 'Cancelled',
@@ -244,8 +243,8 @@ class PostTestState extends State<PostTest> {
           .doc('post-test')
           .get()
           .then((value) {
-        int count = int.parse(value['$cureentDate']['No'].toString());
         setState(() {
+          int count = int.parse(value['$cureentDate']['No'].toString());
           for (var i = 0; i < count; i++) {
             submitedAns.add("Answer$i");
           }

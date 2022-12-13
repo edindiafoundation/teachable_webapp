@@ -46,7 +46,6 @@ class PreTestState extends State<PreTest> {
     videoTitle = widget.title;
     getVerification();
     getQuestions();
-
     super.initState();
   }
 
@@ -64,7 +63,7 @@ class PreTestState extends State<PreTest> {
                     const SizedBox(
                       height: 20,
                     ),
-                    UtilsWidgets.questionField(index, question),
+                    Widgets.questionField(index, question),
                     UtilsWidgets.dropDownButton(
                       'ans_tf'.tr,
                       'ans_tf'.tr,
@@ -90,7 +89,7 @@ class PreTestState extends State<PreTest> {
                     const SizedBox(
                       height: 20,
                     ),
-                    UtilsWidgets.questionField(index, question),
+                    Widgets.questionField(index, question),
                     Widgets.fieldData(useranswer[index].toString(),
                         correctanswer[index].toString(), context,
                         isHighlight: true,
@@ -221,8 +220,8 @@ class PreTestState extends State<PreTest> {
           .doc('pre-test')
           .get()
           .then((value) {
-        int count = int.parse(value['$cureentDate']['No'].toString());
         setState(() {
+          int count = int.parse(value['$cureentDate']['No'].toString());
           for (var i = 0; i < count; i++) {
             submitedAns.add("Answer$i");
           }
