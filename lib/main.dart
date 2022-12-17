@@ -13,7 +13,7 @@ Future<void> main() async {
           messagingSenderId: "592115294229",
           projectId: "event-registration-8c544",
           storageBucket: 'event-registration-8c544.appspot.com')
-      );
+          );
   runApp(const MyApp());
 }
 

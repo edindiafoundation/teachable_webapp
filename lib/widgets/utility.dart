@@ -1,13 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class Utils {
-  static DateTime parseDate(String date) {
-    return DateTime.parse(date);
-  }
-
-  static String getCureentDate(DateTime datetime) {
+  static String getDate(DateTime datetime) {
     DateTime date = new DateTime(datetime.year, datetime.month, datetime.day);
     String todate = date.toString().replaceAll("00:00:00.000", "");
     return todate;
@@ -24,18 +19,6 @@ class Utils {
         DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp) * 1000);
     String date = Utils.formatDate(createDate, format);
     return date;
-  }
-
-  static String currentDateWithFormat(String format) {
-    return DateFormat(format).format(DateTime.now());
-  }
-
-  static String convertStringIntoDateWithFormat(
-      String InputFormat, String inputDate, String outputFormat) {
-    var inputFormat = DateFormat(InputFormat);
-    var date = inputFormat.parse(inputDate);
-    var output = DateFormat(outputFormat);
-    return output.format(date);
   }
 
   static String dateToTime(String inputDate) {
@@ -114,16 +97,6 @@ class Utils {
 
   static onlyIntNumber() {
     final value = [FilteringTextInputFormatter.allow(RegExp('[0-9]'))];
-    return value;
-  }
-
-  static onlyNumberAndSlash() {
-    final value = [FilteringTextInputFormatter.allow(RegExp('[0-9/.,-]'))];
-    return value;
-  }
-
-  static onlyAlphNumeric() {
-    final value = [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]'))];
     return value;
   }
 }

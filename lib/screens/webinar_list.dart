@@ -17,7 +17,7 @@ class _ArchivedWebinarState extends State<ArchivedWebinar> {
   List<String> titles = [];
   List<String> webinarDate = [];
 
-  String cureentDate = Utils.getCureentDate(DateTime.now());
+  String cureentDate = Utils.getDate(DateTime.now());
 
   @override
   void initState() {

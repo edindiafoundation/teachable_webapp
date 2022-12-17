@@ -55,7 +55,7 @@ class _PostTestReportState extends State<PostTestReport> {
               _dateText,
               (val) {
                 setState(() {
-                  cureentDate = Utils.getCureentDate(DateTime.parse(val));
+                  cureentDate = Utils.getDate(DateTime.parse(val));
                 });
                 getTestResult();
                 getRatingResult();

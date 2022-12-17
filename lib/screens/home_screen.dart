@@ -8,6 +8,7 @@ import 'package:event_generator/widgets/utility.dart';
 import 'package:event_generator/widgets/widget_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String cureentDate = '';
   String downloadURL =
       'https://edindia.org/wp-content/uploads/2019/11/EdIndia-Transparent.png';
+  // bool isadded = false;
+  // Uint8List? imageFile;
 
   @override
   void initState() {
@@ -38,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
       getRecentDate();
       isLive();
       onOpen(i);
+      // getWebImage();
       getImage();
       getUser();
       userSession();
@@ -111,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 50,
                   ),
+                  // isadded ? Image.memory(imageFile!) : SizedBox(),
                   Image.network(downloadURL),
                   const SizedBox(
                     height: 50,
@@ -202,9 +207,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-// //Monitor user enterance
+  // Future getWebImage() async {
+  //   final ref = FirebaseStorage.instance.ref().child('images/webinar');
+  //   ref.getData().then((value) {
+  //     setState(() {
+  //       imageFile = value;
+  //       isadded = true;
+  //     });
+  //   });
+  // }
+
+//Monitor user enterance
   Future userSession() async {
-    String todayDate = Utils.getCureentDate(DateTime.now());
+    String todayDate = Utils.getDate(DateTime.now());
     Map sessionMap = {};
     int count = 0;
     List abc = [];

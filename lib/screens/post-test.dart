@@ -47,71 +47,110 @@ class PostTestState extends State<PostTest> {
     return Form(
       key: _formKey,
       child: Scaffold(
-        appBar: UtilsWidgets.buildAppBar(videoTitle + ":" + 'pre_test'.tr),
-        body: !isSubmit
-            ? ListView.builder(
-                itemCount: count,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(children: [
-                    const SizedBox(
-                      height: 20,
+          appBar: UtilsWidgets.buildAppBar(videoTitle + ":" + 'post_test'.tr),
+          body: Column(
+            children: [
+              !isSubmit
+                  ? Expanded(
+                      child: ListView.builder(
+                          itemCount: count,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Widgets.questionField(index, question),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              UtilsWidgets.dropDownButton(
+                                'ans_tf'.tr,
+                                'ans_tf'.tr,
+                                useranswer[index],
+                                options[index],
+                                (val) {
+                                  setState(() {
+                                    useranswer[index] = val.toString();
+                                  });
+                                },
+                                validator: (p0) {
+                                  if (p0 == null || p0.isEmpty) {
+                                    return 'please'.tr + 'ans_tf'.tr;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ]);
+                          }),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                          itemCount: count,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Widgets.questionField(index, question),
+                              Widgets.fieldData(useranswer[index].toString(),
+                                  correctanswer[index].toString(), context,
+                                  isHighlight: true,
+                                  color:
+                                      useranswer[index] == correctanswer[index]
+                                          ? Colors.green
+                                          : Colors.red),
+                            ]);
+                          }),
                     ),
-                    Widgets.questionField(index, question),
-                    UtilsWidgets.dropDownButton(
-                      'ans_tf'.tr,
-                      'ans_tf'.tr,
-                      useranswer[index],
-                      options[index],
-                      (val) {
-                        setState(() {
-                          useranswer[index] = val.toString();
-                        });
-                      },
-                      validator: (p0) {
-                        if (p0 == null || p0.isEmpty) {
-                          return 'please'.tr + 'ans_tf'.tr;
+              SizedBox(
+                height: 20,
+              ),
+              UtilsWidgets.buildRoundBtn(
+                  !isSubmit ? 'submit'.tr : 'tx'.tr,
+                  !isSubmit
+                      ? () {
+                          if (_formKey.currentState!.validate()) {
+                            UtilsWidgets.bottomDialogs(
+                                'final_check'.tr,
+                                'submit'.tr,
+                                'cancel'.tr,
+                                'save'.tr,
+                                context, () {
+                              Navigator.pop(context);
+                            }, () {
+                              Navigator.pop(context);
+                              onSubmit();
+                            });
+                          }
                         }
-                      },
-                    ),
-                  ]);
-                })
-            : ListView.builder(
-                itemCount: count,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Widgets.questionField(index, question),
-                    Widgets.fieldData(useranswer[index].toString(),
-                        correctanswer[index].toString(), context,
-                        isHighlight: true,
-                        color: useranswer[index] == correctanswer[index]
-                            ? Colors.green
-                            : Colors.red),
-                  ]);
-                }),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton.extended(
-            icon: !isSubmit
-                ? Icon(Icons.save_alt_rounded)
-                : Icon(Icons.thumb_up_alt_rounded),
-            foregroundColor: Colors.white,
-            label: !isSubmit ? Text('submit'.tr) : Text('tx'.tr),
-            onPressed: !isSubmit
-                ? () {
-                    if (_formKey.currentState!.validate()) {
-                      UtilsWidgets.bottomDialogs('final_check'.tr, 'submit'.tr,
-                          'cancel'.tr, 'save'.tr, context, () {
-                        Navigator.pop(context);
-                      }, () {
-                        Navigator.pop(context);
-                        onSubmit();
-                      });
-                    }
-                  }
-                : () {}),
-      ),
+                      : () {}),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          )
+
+          // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          // floatingActionButton: FloatingActionButton.extended(
+          //     icon: !isSubmit
+          //         ? Icon(Icons.save_alt_rounded)
+          //         : Icon(Icons.thumb_up_alt_rounded),
+          //     foregroundColor: Colors.white,
+          //     label: !isSubmit ? Text('submit'.tr) : Text('tx'.tr),
+          //     onPressed: !isSubmit
+          //         ? () {
+          //             if (_formKey.currentState!.validate()) {
+          //               UtilsWidgets.bottomDialogs('final_check'.tr, 'submit'.tr,
+          //                   'cancel'.tr, 'save'.tr, context, () {
+          //                 Navigator.pop(context);
+          //               }, () {
+          //                 Navigator.pop(context);
+          //                 onSubmit();
+          //               });
+          //             }
+          //           }
+          //         : () {}),
+          ),
     );
   }
 

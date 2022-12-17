@@ -47,7 +47,7 @@ class _AddLinkState extends State<AddLink> {
                     _dateText,
                     (val) {
                       setState(() {
-                        cureentDate = Utils.getCureentDate(DateTime.parse(val));
+                        cureentDate = Utils.getDate(DateTime.parse(val));
                       });
                     },
                   ),

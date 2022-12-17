@@ -21,11 +21,11 @@ class _UserSessionReportState extends State<UserSessionReport> {
   List<List<dynamic>> reportData = [
     ["Email", "Total Login", "Entries"]
   ];
-  final TextEditingController _dateText = TextEditingController();
-
   List<dynamic> sessionDate = [];
-  String cureentDate = '';
-
+  final TextEditingController _Startdate = TextEditingController();
+  final TextEditingController _Enddate = TextEditingController();
+  List<String> days = [];
+  String todayDate = Utils.getDate(DateTime.now());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,17 +38,46 @@ class _UserSessionReportState extends State<UserSessionReport> {
             const SizedBox(
               height: 20,
             ),
-            UtilsWidgets.buildDatePicker(
-              'Choose Webinar Date',
-              'Choose Webinar Date',
-              _dateText,
-              (val) {
-                setState(() {
-                  cureentDate = Utils.getCureentDate(DateTime.parse(val));
-                });
-                getReport();
-              },
-            ),
+            kIsWeb
+                ? Column(
+                    children: [
+                      UtilsWidgets.buildDatePicker(
+                        'Choose Start Date',
+                        'Choose Start Date',
+                        _Startdate,
+                        (val) {
+                          setState(() {
+                            todayDate = Utils.getDate(DateTime.parse(val));
+                          });
+                        },
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      UtilsWidgets.buildDatePicker(
+                        'Choose Start Date',
+                        'Choose Start Date',
+                        _Startdate,
+                        (val) {},
+                      ),
+                      UtilsWidgets.buildDatePicker(
+                        'Choose End Date',
+                        'Choose End Date',
+                        _Enddate,
+                        (val) {
+                          getDaysInBeteween(DateTime.parse(_Startdate.text),
+                              DateTime.parse(_Enddate.text));
+                          days.forEach(
+                            (element) {
+                              getReport(element);
+                            },
+                          );
+                          UtilsWidgets.showToastFunc('Now Download The Report');
+                        },
+                      ),
+                    ],
+                  ),
             const SizedBox(
               height: 20,
             ),
@@ -70,16 +99,15 @@ class _UserSessionReportState extends State<UserSessionReport> {
 
   Future uploadCSV() async {
     String csvData = ListToCsvConverter().convert(reportData);
-
     String directory = (await getApplicationSupportDirectory()).path;
-    final path = "$directory/user-session$cureentDate.csv";
+    final path = "$directory/user-session$todayDate.csv";
     File file = File(path);
     await file.writeAsString(csvData).then((value) {
-      FileSaver.instance.saveAs('user-session$cureentDate',
+      FileSaver.instance.saveAs('user-session$todayDate',
           file.readAsBytesSync(), 'csv', MimeType.CSV);
       final ref = FirebaseStorage.instance
           .ref()
-          .child('report/user-session/user-session$cureentDate.csv');
+          .child('report/user-session/user-session$todayDate.csv');
       ref
           .putFile(file)
           .then((p0) => UtilsWidgets.showToastFunc('csv Uploaded Sucessfully'));
@@ -88,21 +116,39 @@ class _UserSessionReportState extends State<UserSessionReport> {
 
   Future downloadCSV() async {
     try {
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('report/user-session/user-session$cureentDate.csv');
-      ref.getDownloadURL().then((value) async {
-        if (!await launchUrl(Uri.parse(value))) {
-          throw 'Could not launch $value';
+      final storageRef =
+          FirebaseStorage.instance.ref().child("report/user-session");
+      final listResult = await storageRef.listAll();
+      for (var item in listResult.items) {
+        if (item.fullPath == 'report/user-session/user-session$todayDate.csv') {
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('report/user-session/user-session$todayDate.csv');
+          ref.getDownloadURL().then((value) async {
+            if (!await launchUrl(Uri.parse(value))) {
+              throw 'Could not launch $value';
+            }
+            UtilsWidgets.showToastFunc('User Data Download Sucessfully');
+          });
+        } else {
+          UtilsWidgets.showToastFunc('No Record Found');
         }
-        UtilsWidgets.showToastFunc('User Data Download Sucessfully');
-      });
+      }
     } on FirebaseException catch (e) {
       UtilsWidgets.showToastFunc(e.message.toString());
     }
   }
 
-  Future getReport() async {
+  getDaysInBeteween(DateTime startDate, DateTime endDate) {
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      setState(() {
+        days.add(Utils.getDate(
+            DateTime(startDate.year, startDate.month, startDate.day + i)));
+      });
+    }
+  }
+
+  Future getReport(String cureentDate) async {
     try {
       FirebaseFirestore.instance
           .collection('user-session')
@@ -124,8 +170,7 @@ class _UserSessionReportState extends State<UserSessionReport> {
             });
           }
         });
-
-        UtilsWidgets.showToastFunc('Now Download The Report');
+        // UtilsWidgets.showToastFunc('Now Download The Report');
       });
     } on FirebaseException catch (e) {
       UtilsWidgets.showToastFunc(e.message.toString());

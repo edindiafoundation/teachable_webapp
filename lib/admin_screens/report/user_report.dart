@@ -37,7 +37,7 @@ class _UsersReportState extends State<UsersReport> {
       "college_name"
     ]
   ];
-  String cureentDate = Utils.getCureentDate(DateTime.now());
+  String cureentDate = Utils.getDate(DateTime.now());
 
   @override
   void initState() {

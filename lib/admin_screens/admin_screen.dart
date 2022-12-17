@@ -51,7 +51,7 @@ class _AdminScreenState extends State<AdminScreen> {
                 _dateText,
                 (val) {
                   setState(() {
-                    cureentDate = Utils.getCureentDate(DateTime.parse(val));
+                    cureentDate = Utils.getDate(DateTime.parse(val));
                   });
                 },
               ),

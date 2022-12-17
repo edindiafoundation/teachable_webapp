@@ -4,6 +4,7 @@ class Widgets {
   static Widget fieldData(String? key, String? value, BuildContext context,
       {bool isHighlight = false, Color? color}) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(height: 5),
         SizedBox(
@@ -67,14 +68,11 @@ class Widgets {
     );
   }
 
-  static SingleChildScrollView questionField(
-      int index, List<String> questionList) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Text(
-        (index + 1).toString() + '. ' + questionList[index],
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
+  static questionField(int index, List<String> questionList) {
+    return Text(
+      (index + 1).toString() + '. ' + questionList[index],
+      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+      maxLines: 5,
     );
   }
 }
