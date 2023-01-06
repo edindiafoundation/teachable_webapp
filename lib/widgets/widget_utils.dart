@@ -13,17 +13,13 @@ import 'package:get/get.dart';
 class UtilsWidgets {
   static AppBar buildAppBar(
     String title, {
-    Widget? icon,
     bool isrequired = false,
-    String? btnName,
     Function()? onChange,
   }) {
     return AppBar(
-        leading: icon,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         toolbarHeight: 70,
-        // automaticallyImplyLeading: false,
         title: Text(
           title,
           maxLines: 3,
@@ -32,12 +28,10 @@ class UtilsWidgets {
         centerTitle: true,
         actions: [
           isrequired
-              ? TextButton(
+              ? IconButton(
                   onPressed: onChange,
-                  child: Text('$btnName',
-                      style: TextStyle(
-                        color: Colors.white,
-                      )))
+                  icon: Icon(Icons.refresh),
+                )
               : SizedBox()
         ],
         flexibleSpace: Container(

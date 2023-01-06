@@ -72,7 +72,6 @@ class _UsersReportState extends State<UsersReport> {
 
   Future uploadCSV() async {
     String csvData = ListToCsvConverter().convert(userData);
-
     String directory = (await getApplicationSupportDirectory()).path;
     final path = "$directory/users$cureentDate.csv";
     File file = File(path);

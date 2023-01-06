@@ -8,7 +8,6 @@ import 'package:event_generator/widgets/utility.dart';
 import 'package:event_generator/widgets/widget_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -46,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       getUser();
       userSession();
       getVerification();
+      isLive();
     }
     super.initState();
   }
@@ -56,7 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ? EmailLoginPage()
         : Scaffold(
             drawer: BuildDrawer.buildUserDrawer(context),
-            appBar: UtilsWidgets.buildAppBar('Welcome ' + username),
+            appBar: UtilsWidgets.buildAppBar('Welcome ' + username,
+                isrequired: true, onChange: () {
+              getVerification();
+              isLive();
+            }),
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
@@ -71,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           'go_webinar'.tr,
                           webinarislive
                               ? () {
-                                  isLive();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

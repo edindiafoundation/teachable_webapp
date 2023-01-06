@@ -28,15 +28,14 @@ class PreTestState extends State<PreTest> {
   String email = '';
   String videoID = '';
   String videoTitle = '';
+  String cureentDate = '';
   bool isSubmit = false;
-  Map valueMap = {};
   int count = 0;
   List<String> question = [];
   List<String> correctanswer = [];
   List<String> useranswer = [];
   List<List> options = [];
   List submitedAns = [];
-  String cureentDate = '';
 
   @override
   void initState() {
@@ -195,10 +194,6 @@ class PreTestState extends State<PreTest> {
               isSubmit = abc['isSubmit'];
             });
           }
-        } else {
-          setState(() {
-            isSubmit = false;
-          });
         }
         if (isSubmit) {
           getField();

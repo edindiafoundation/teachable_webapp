@@ -44,10 +44,15 @@ class SplashScreenState extends State<SplashScreen>
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/app_icon.png',
-                width: animation.value * 275,
-                height: animation.value * 275,
+              GestureDetector(
+                onTap: () {
+                  navigationPage();
+                },
+                child: Image.asset(
+                  'assets/images/app_icon.png',
+                  width: animation.value * 275,
+                  height: animation.value * 275,
+                ),
               ),
               const Text('Teaching Unfolded',
                   style: TextStyle(

@@ -207,10 +207,6 @@ class PostTestState extends State<PostTest> {
               isSubmit = abc['isSubmit'];
             });
           }
-        } else {
-          setState(() {
-            isSubmit = false;
-          });
         }
         if (isSubmit) {
           getField();
@@ -235,8 +231,8 @@ class PostTestState extends State<PostTest> {
           count = int.parse(value[cureentDate].toString()[no]);
           for (var i = 0; i < count; i++) {
             question.add(value[cureentDate]["Question$i"].toString());
-            correctanswer.add(value[cureentDate]["Answer$i"].toString());
             options.add(value[cureentDate]["Options$i"]);
+            correctanswer.add(value[cureentDate]["Answer$i"].toString());
             useranswer.add('');
           }
         });

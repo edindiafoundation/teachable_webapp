@@ -105,8 +105,8 @@ class BuildDrawer {
               leading: const Icon(Icons.storage_outlined),
               title: const Text('Our Resources'),
               onTap: () async {
-                final Uri formurl = Uri.parse(
-                    'https://edindia.org.in/teachable/teachable-resources/');
+                final Uri formurl =
+                    Uri.parse('https://edindia.org/aspiring-teacher/');
                 if (!await launchUrl(formurl)) {
                   throw 'Could not launch $formurl';
                 }
